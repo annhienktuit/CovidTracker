@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val tvDeaths = findViewById<TextView>(R.id.tvDeaths)
         val tvRecovered = findViewById<TextView>(R.id.tvRecovered)
         val imgFlag = findViewById<ImageView>(R.id.imgFlag)
-        //lateinit var flagURL:String
+        lateinit var flagURL:String
         val stringRequest = StringRequest(Request.Method.GET, url,
             { response ->
                 var jsonObj = JSONObject(response.toString())
@@ -34,8 +34,9 @@ class MainActivity : AppCompatActivity() {
                 tvRecovered.text = jsonObj.getString("recovered")
                 tvDeaths.text = jsonObj.getString("deaths")
                 try {
-                    //flagURL = jsonObj.getString("flag")
-                    imgFlag.tag = "https://disease.sh/assets/img/flags/vn.png"
+                    var countryInfo = jsonObj.getJSONObject("countryInfo")
+                    flagURL = countryInfo.getString("flag")
+                    imgFlag.tag = flagURL
                     val download = DownloadImageTask()
                     download.execute(imgFlag)
                 }
