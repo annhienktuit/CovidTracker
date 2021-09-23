@@ -11,9 +11,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Covid Tracker"
-            android:textSize="32dp"
+            android:textSize="32sp"
             android:textColor="@color/purple_500"
             android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Today"
+            android:textSize="18sp"/>
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
@@ -45,6 +52,15 @@
             android:textSize="20dp"
             android:textColor="@color/brown"
             android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/tvTodayCases"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="0"
+        android:textSize="14sp"
+        android:textColor="@color/brown"
+        android:layout_gravity="center"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,7 +75,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="0"
-        android:textSize="20dp"
+        android:textSize="20sp"
+        android:textColor="@color/red"
+        android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/tvTodayDeaths"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="0"
+        android:textSize="14sp"
         android:textColor="@color/red"
         android:layout_gravity="center"/>
 
@@ -79,18 +104,34 @@
         android:textSize="20dp"
         android:textColor="@color/green"
         android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Vaccination converage"
+        android:textColor="@color/black"
+        android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/tvVaccination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="0"
+        android:textSize="20sp"
+        android:textColor="@color/blue"
+        android:layout_gravity="center"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:text="Select Country"/>
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:spinnerMode="dialog"
         android:entries="@array/countries_array"

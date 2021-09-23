@@ -16,8 +16,8 @@ import java.lang.Exception
 import android.widget.AdapterView
 
 import android.widget.AdapterView.OnItemSelectedListener
-
-
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), OnItemSelectedListener {
@@ -25,9 +25,10 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val tvDate = findViewById<TextView>(R.id.tvDate)
+        val date = getCurrentDateTime()
+        tvDate.text = date.toString("M/dd/yyyy")
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val country = "vietnam"
-        fetchData(country)
         spinner.onItemSelectedListener = this
     }
     private fun fetchData(country: String){
@@ -60,15 +61,59 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener {
         queue.add(stringRequest)
     }
 
+    private fun fetchTodayData(country: String){
+        val url = "https://coronavirus-19-api.herokuapp.com/countries/$country"
+        val queue = Volley.newRequestQueue(this)
+        val tvTodayCases = findViewById<TextView>(R.id.tvTodayCases)
+        val tvTodayDeaths = findViewById<TextView>(R.id.tvTodayDeaths)
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            { response ->
+                var jsonObj = JSONObject(response.toString())
+                val case = jsonObj.getString("todayCases")
+                val death = jsonObj.getString("todayDeaths")
+                tvTodayCases.text = "+$case"
+                tvTodayDeaths.text = "+$death"
+            },
+            { tvTodayCases.text = "That didn't work!" })
+        queue.add(stringRequest)
+    }
+
+    private fun fetchVaccination(country: String){
+        val url = "https://disease.sh/v3/covid-19/vaccine/coverage/countries/$country?lastdays=1&fullData=true"
+        val queue = Volley.newRequestQueue(this)
+        val tvVaccination = findViewById<TextView>(R.id.tvVaccination)
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            { response ->
+                val date = getCurrentDateTime()
+                var jsonObj = JSONObject(response.toString())
+                var vaccinationInfo = jsonObj.getJSONArray("timeline")
+                for(i in 0 until vaccinationInfo.length()){
+                    var jsonInner:JSONObject = vaccinationInfo.getJSONObject(i)
+                    tvVaccination.text = jsonInner.get("total").toString()
+                }
+            },
+            { tvVaccination.text = "That didn't work!" })
+        queue.add(stringRequest)
+    }
+
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         val countryName = p0!!.getItemAtPosition(p2).toString()
         val tvTitle = findViewById<TextView>(R.id.tvTitle)
         fetchData(countryName)
+        fetchTodayData(countryName)
+        fetchVaccination(countryName)
         tvTitle.text = "$countryName Statistics"
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
         TODO("Not yet implemented")
+    }
+    fun getCurrentDateTime(): Date {
+        return Calendar.getInstance().time
+    }
+    fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String {
+        val formatter = SimpleDateFormat(format, locale)
+        return formatter.format(this)
     }
 
 }
