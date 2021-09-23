@@ -15,6 +15,7 @@
             android:textColor="@color/purple_500"
             android:layout_marginTop="10dp"/>
         <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -77,6 +78,23 @@
         android:text="0"
         android:textSize="20dp"
         android:textColor="@color/green"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"
+        android:text="Select Country"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:entries="@array/countries_array"
+        android:textAlignment="center"
         android:layout_gravity="center"/>
 
 
