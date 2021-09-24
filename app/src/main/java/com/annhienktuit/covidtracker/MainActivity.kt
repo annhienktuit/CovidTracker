@@ -16,6 +16,8 @@ import java.lang.Exception
 import android.widget.AdapterView
 
 import android.widget.AdapterView.OnItemSelectedListener
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,13 +40,20 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener {
         val tvDeaths = findViewById<TextView>(R.id.tvDeaths)
         val tvRecovered = findViewById<TextView>(R.id.tvRecovered)
         val imgFlag = findViewById<ImageView>(R.id.imgFlag)
+        val tvPopulation = findViewById<TextView>(R.id.tvPopulation)
+        val tvVaccination = findViewById<TextView>(R.id.tvVaccination)
         lateinit var flagURL:String
         val stringRequest = StringRequest(Request.Method.GET, url,
             { response ->
+                println(url)
                 var jsonObj = JSONObject(response.toString())
                 tvCases.text = jsonObj.getString("cases")
                 tvRecovered.text = jsonObj.getString("recovered")
                 tvDeaths.text = jsonObj.getString("deaths")
+                val population = jsonObj.getString("population")
+                var percentage = ((tvVaccination.text.toString().toDouble()) / (population.toString().toDouble())) * 100
+                percentage = roundOffDecimal(percentage)
+                tvPopulation.text = "$percentage%"
                 try {
                     var countryInfo = jsonObj.getJSONObject("countryInfo")
                     flagURL = countryInfo.getString("flag")
@@ -66,16 +75,23 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener {
         val queue = Volley.newRequestQueue(this)
         val tvTodayCases = findViewById<TextView>(R.id.tvTodayCases)
         val tvTodayDeaths = findViewById<TextView>(R.id.tvTodayDeaths)
-        val stringRequest = StringRequest(Request.Method.GET, url,
-            { response ->
-                var jsonObj = JSONObject(response.toString())
-                val case = jsonObj.getString("todayCases")
-                val death = jsonObj.getString("todayDeaths")
-                tvTodayCases.text = "+$case"
-                tvTodayDeaths.text = "+$death"
-            },
-            { tvTodayCases.text = "That didn't work!" })
-        queue.add(stringRequest)
+        try {
+            val stringRequest = StringRequest(Request.Method.GET, url,
+                { response ->
+                    println(url)
+                    var jsonObj = JSONObject(response.toString())
+                    val case = jsonObj.getString("todayCases")
+                    val death = jsonObj.getString("todayDeaths")
+                    tvTodayCases.text = "+$case"
+                    tvTodayDeaths.text = "+$death"
+                },
+                { tvTodayCases.text = "That didn't work!" })
+            queue.add(stringRequest)
+        }
+        catch (e:Exception){
+            println(e.toString())
+        }
+
     }
 
     private fun fetchVaccination(country: String){
@@ -99,9 +115,9 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         val countryName = p0!!.getItemAtPosition(p2).toString()
         val tvTitle = findViewById<TextView>(R.id.tvTitle)
+        fetchVaccination(countryName)
         fetchData(countryName)
         fetchTodayData(countryName)
-        fetchVaccination(countryName)
         tvTitle.text = "$countryName Statistics"
     }
 
@@ -114,6 +130,11 @@ class MainActivity : AppCompatActivity(), OnItemSelectedListener {
     fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String {
         val formatter = SimpleDateFormat(format, locale)
         return formatter.format(this)
+    }
+    fun roundOffDecimal(number: Double): Double {
+        val df = DecimalFormat("#.##")
+        df.roundingMode = RoundingMode.FLOOR
+        return df.format(number).toDouble()
     }
 
 }

@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +61,6 @@
         android:id="@+id/tvTodayCases"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="0"
         android:textSize="14sp"
         android:textColor="@color/brown"
@@ -82,7 +86,6 @@
         android:id="@+id/tvTodayDeaths"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="0"
         android:textSize="14sp"
         android:textColor="@color/red"
@@ -108,7 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Vaccination converage"
+        android:text="Vaccination coverage"
         android:textColor="@color/black"
         android:layout_gravity="center"/>
     <TextView
@@ -120,6 +123,15 @@
         android:textSize="20sp"
         android:textColor="@color/blue"
         android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/tvPopulation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="14sp"
+            android:textColor="@color/blue"
+            android:layout_gravity="center"/>
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
